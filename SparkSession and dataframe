@@ -1,3 +1,6 @@
+#Creation of Spark Session, creating RDD and Dataframe 
+
+
 import pyspark
 from pyspark.sql import SparkSession
 spark = SparkSession.builder.appName("Spark_examples").getOrCreate() 
