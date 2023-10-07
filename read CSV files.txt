@@ -1,0 +1,57 @@
+#Reading of CSV files
+
+df1=spark.read.csv('test.csv')
+df1.show()
+Result:
++---------+------+---+------+
+|      _c0|   _c1|_c2|   _c3|
++---------+------+---+------+
+|     Name|rollno|age|salary|
+|   Sourav|     2| 23|  9999|
+|      Raj|     3| 34|  5555|
+|     yasj|     4| 34|  9990|
+|Sunhanshu|     5| 25|  9909|
+|   Mahesh|     5| 22|   888|
+|  Shubham|     6|  7|   908|
+|   Suresh|     7| 44|   555|
+|    Alok |    8| 34| 45556|
++---------+------+---+------+
+
+-----------------------------------------------------------
+#Reading a CSv files
+#inferSchema means it will get the column datatypes
+#HEader= True means it will consider the first row as a eader
+
+df1=spark.read.options(inferSchema='True',header='True').csv('test.csv')
+df1.show()
+
++---------+------+---+------+
+|     Name|rollno|age|salary|
++---------+------+---+------+
+|   Sourav|     2| 23|  9999|
+|      Raj|     3| 34|  5555|
+|     yasj|     4| 34|  9990|
+|Sunhanshu|     5| 25|  9909|
+|   Mahesh|     5| 22|   888|
+|  Shubham|     6|  7|   908|
+|    musku|     7| 44|   555|
+|    Alok |     8| 34|  4556|
++---------+------+---+------+
+
+
+df1.printSchema()
+
+
+root
+ |-- Name: string (nullable = true)
+ |-- rollno: integer (nullable = true)
+ |-- age: integer (nullable = true)
+ |-- salary: integer (nullable = true)
+
+
+
+
+
+
+
+df1.write.options(header='True',delimiter=',').csv("files/name")

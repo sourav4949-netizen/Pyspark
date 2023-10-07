@@ -1,0 +1,55 @@
+
+#Reading CSV files and adding Schema from ddifferent places
+#So what we are doing over here is we are reading data from CSV files and we are adding the Schema ourselves
+#
+
+
+import pyspark
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType,StructField, StringType, IntegerType 
+from pyspark.sql.types import ArrayType, DoubleType, BooleanType
+from pyspark.sql.functions import col,array_contains
+
+spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
+
+df = spark.read.csv("zipcodes.csv")
+df.printSchema()
+#This will add the schema itself making 
+root
+ |-- _c0: string (nullable = true)
+ |-- _c1: string (nullable = true)
+ |-- _c2: string (nullable = true)
+ |-- _c3: string (nullable = true)
+ |-- _c4: string (nullable = true)
+ |-- _c5: string (nullable = true)
+ |-- _c6: string (nullable = true)
+ |-- _c7: string (nullable = true)
+ |-- _c8: string (nullable = true)
+ |-- _c9: string (nullable = true)
+ |-- _c10: string (nullable = true)
+ |-- _c11: string (nullable = true)
+ |-- _c12: string (nullable = true)
+ |-- _c13: string (nullable = true)
+ |-- _c14: string (nullable = true)
+ |-- _c15: string (nullable = true)
+ |-- _c16: string (nullable = true)
+ |-- _c17: string (nullable = true)
+ |-- _c18: string (nullable = true)
+ |-- _c19: string (nullable = true)
+
+df2 = spark.read.option("header",True).csv("zipcodes.csv")
+df2.printSchema()
+
+
+# This will make the first row as a HEader
+# if the file has haeder it will get the header
+   
+df3 = spark.read.options(header='True', delimiter=',').csv("zipcodes.csv")
+df3.printSchema()
+
+schema = StructType().add("RecordNumber",IntegerType(),True).add("Zipcode",IntegerType(),True).add("ZipCodeType",StringType(),True).add("City",StringType(),True).add("State",StringType(),True).add("LocationType",StringType(),True).add("Lat",DoubleType(),True).add("Long",DoubleType(),True).add("Xaxis",IntegerType(),True).add("Yaxis",DoubleType(),True).add("Zaxis",DoubleType(),True).add("WorldRegion",StringType(),True).add("Country",StringType(),True).add("LocationText",StringType(),True).add("Location",StringType(),True).add("Decommisioned",BooleanType(),True).add("TaxReturnsFiled",StringType(),True).add("EstimatedPopulation",IntegerType(),True).add("TotalWages",IntegerType(),True).add("Notes",StringType(),True)
+      
+df_with_schema = spark.read.format("csv").option("header", True).schema(schema).load("zipcodes.csv")
+
+# we are creating the HEader ourselves by creating a list of Schema and then we are adding it into our DataFrame 
+df_with_schema.printSchema()
