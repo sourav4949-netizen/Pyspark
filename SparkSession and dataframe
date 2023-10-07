@@ -1,0 +1,13 @@
+import pyspark
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("Spark_examples").getOrCreate() 
+
+print(spark)
+
+columns = ["language","users_count"]
+data = [("Java", "20000"), ("Python", "100000"), ("Scala", "3000")]
+rdd = spark.sparkContext.parallelize(data)
+print(rdd)
+columns = ["language","users_count"]
+dfFromRDD1 = rdd.toDF(columns)
+dfFromRDD1.printSchema()
